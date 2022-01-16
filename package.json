@@ -2,7 +2,8 @@
   "dependencies": {
     "@prantlf/jsonlint": "^10.2.0",
     "adm-zip": "^0.4.16",
-    "convert-svg-to-png": "^0.5.0"
+    "convert-svg-to-png": "^0.5.0",
+    "express": "^4.17.2"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^3.1.0",
@@ -23,6 +24,7 @@
     "convert": "node ./bin/convert.js",
     "prettify": "jsonlint -si --trim-trailing-commas --enforce-double-quotes ./src/categories.json ./src/technologies/*.json",
     "build": "yarn run link && yarn run validate && yarn run prettify && yarn run convert && node ./bin/build.js",
-    "build:safari": "xcrun safari-web-extension-converter --swift --project-location build --force src/drivers/webextension"
+    "build:safari": "xcrun safari-web-extension-converter --swift --project-location build --force src/drivers/webextension",
+    "server": "node src/servers/app.js"
   }
 }

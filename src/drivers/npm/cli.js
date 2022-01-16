@@ -40,13 +40,11 @@ while (true) {
       aliases[matches[1]] ||
       matches[1].replace(/-\w/g, (_matches) => _matches[1].toUpperCase())
     // eslint-disable-next-line no-nested-ternary
-    const value = matches[2]
+    options[key] = matches[2]
       ? matches[2]
       : args[0] && !args[0].startsWith('-')
       ? args.shift()
       : true
-
-    options[key] = value
   } else {
     url = arg
   }
