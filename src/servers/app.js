@@ -70,18 +70,46 @@ const crawling = async (args) => {
 
       await wappalyzer.destroy()
 
-      process.exit(1)
+      // process.exit(1)
     }
   })()
 }
 
+const transformResponse = (result) => {
+  const cache = {}
+  const allCategories = []
+  const technologies = result.technologies
+  technologies.forEach((item) => {
+    item.categories.forEach((category) => {
+      if (cache[category.id] === undefined) {
+        allCategories.push(category)
+      }
+    })
+  })
+
+  const newTechnologies = []
+  allCategories.forEach((category) => {
+    const newTechnology = { ...category, data: [] }
+    technologies.forEach((technology) => {
+      technology.categories.forEach((item) => {
+        if (item.name === category.name) {
+          const { categories, ...detail } = technology
+          newTechnology.data.push(detail)
+        }
+      })
+    })
+    newTechnologies.push(newTechnology)
+  })
+  return newTechnologies
+}
+
 app.get('/', async (req, res) => {
-  const url = req.query.url
   try {
+    const url = req.query.url
     if (url) {
       const result = await crawling([url])
       res.setHeader('Content-Type', 'application/json')
-      res.status(200).json(result)
+      res.status(200).json(transformResponse(result))
     } else {
       res.status(404).send('Please set url parameter')
     }
